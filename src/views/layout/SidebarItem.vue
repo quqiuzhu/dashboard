@@ -43,4 +43,3 @@ export default {
   text-indent: 10px;
 }
 </style>
-

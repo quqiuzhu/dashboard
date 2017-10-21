@@ -30,9 +30,9 @@ export const constantRouterMap = [
   {
     path: '/example',
     component: Layout,
-    redirect: 'noredirect',
-    name: 'Example',
+    redirect: 'page/form',
     icon: 'zujian',
+    noDropdown: true,
     children: [
       { path: 'index', name: 'Form', icon: 'zonghe', component: _import('page/form') }
     ]
@@ -55,4 +55,3 @@ export default new Router({
   scrollBehavior: () => ({ y: 0 }),
   routes: constantRouterMap
 })
-
