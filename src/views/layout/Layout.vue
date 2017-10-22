@@ -46,7 +46,7 @@ export default {
             top: 0;
             left: 0;
             right: 0;
-      			background: #1d8ce0;
+      			background: #20A0FF;
       			color:#fff;
             transition: all .16s ease-out;
         }

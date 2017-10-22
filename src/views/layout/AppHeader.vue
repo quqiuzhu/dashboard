@@ -1,7 +1,9 @@
 <template>
   <el-col :span="24" class="header">
     <el-col :span="10" class="logo" :class="!sidebar.opened?'logo-collapse-width':'logo-width'">
-      {{!sidebar.opened?'':'不鸟科技'}}
+      <span class="logo-img"><img src="static/logo.png" />
+        {{!sidebar.opened?'':'不鸟科技'}}
+      </span>
     </el-col>
     <el-col :span="10">
       <div class="tools" @click.prevent="toggleSideBar">
@@ -69,15 +71,13 @@ export default {
     .logo {
         height:60px;
         font-size: 22px;
-        padding-left:20px;
-        padding-right:20px;
         border-color: rgba(238,241,146,0.3);
         border-right-width: 1px;
         border-right-style: solid;
         img {
-          width: 40px;
+          width: 32px;
           float: left;
-          margin: 10px 10px 10px 18px;
+          margin: 14px 8px 14px 12px;
         }
         .txt {
           color:#fff;
