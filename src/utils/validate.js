@@ -1,10 +1,8 @@
-/**
- * Created by jiachenpan on 16/11/18.
- */
 
-export function isvalidUsername(str) {
-  const valid_map = ['admin', 'editor']
-  return valid_map.indexOf(str.trim()) >= 0
+/* 合法电话号码 */
+export function isvalidPhone(str) {
+  const urlregex = /^1[0-9]{10}$/
+  return urlregex.test(str)
 }
 
 /* 合法uri*/
@@ -30,4 +28,3 @@ export function validatAlphabets(str) {
   const reg = /^[A-Za-z]+$/
   return reg.test(str)
 }
-

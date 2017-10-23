@@ -54,7 +54,7 @@ export default {
     line-height: 60px;
     .userinfo {
         text-align: right;
-        padding-right: 35px;
+        padding-right: 18px;
         float: right;
         .userinfo-inner {
             cursor: pointer;

@@ -45,6 +45,7 @@ export default {
       width: 200px;
       float: left;
       color: #475669;
+      font-size: 20px;
     }
     .breadcrumb-inner {
       float: right;
