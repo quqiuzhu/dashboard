@@ -1,66 +1,49 @@
-import { login, logout, getInfo } from '@/api/login'
-import { getToken, setToken, removeToken } from '@/utils/auth'
+import { login, logout } from '@/api/login'
+import { getToken, setToken, removeToken, getUser, setUser} from '@/utils/auth'
 
 const user = {
   state: {
     token: getToken(),
-    name: '',
-    avatar: '',
-    roles: []
+    info: getUser()
   },
 
   mutations: {
     SET_TOKEN: (state, token) => {
       state.token = token
     },
-    SET_NAME: (state, name) => {
-      state.name = name
+    SET_INFO: (state, info) => {
+      state.info = info
     },
-    SET_AVATAR: (state, avatar) => {
-      state.avatar = avatar
-    },
-    SET_ROLES: (state, roles) => {
-      state.roles = roles
-    }
   },
 
   actions: {
     // 登录
     Login({ commit }, userInfo) {
-      const username = userInfo.username.trim()
+      const phone = userInfo.phone.trim()
       return new Promise((resolve, reject) => {
-        login(username, userInfo.password).then(response => {
+        login(phone, userInfo.password).then(response => {
           const data = response.data
           setToken(data.token)
+          let avatar = data.user.avatar
+          let user = {
+            roles: data.roles,
+            name: data.user.phone,
+            avatar: avatar ? avatar : 'static/avatar.png'
+          }
+          setUser(user)
           commit('SET_TOKEN', data.token)
+          commit('SET_INFO', user)
           resolve()
         }).catch(error => {
           reject(error)
         })
       })
     },
-
-    // 获取用户信息
-    GetInfo({ commit, state }) {
-      return new Promise((resolve, reject) => {
-        getInfo(state.token).then(response => {
-          const data = response.data
-          commit('SET_ROLES', data.role)
-          commit('SET_NAME', data.name)
-          commit('SET_AVATAR', data.avatar)
-          resolve(response)
-        }).catch(error => {
-          reject(error)
-        })
-      })
-    },
-
     // 登出
     LogOut({ commit, state }) {
       return new Promise((resolve, reject) => {
-        logout(state.token).then(() => {
+        logout().then(() => {
           commit('SET_TOKEN', '')
-          commit('SET_ROLES', [])
           removeToken()
           resolve()
         }).catch(error => {

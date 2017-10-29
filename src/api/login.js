@@ -1,11 +1,21 @@
 import fetch from '@/utils/fetch'
 
-export function login(username, password) {
+export function captcha(phone) {
+  return fetch({
+    url: '/user/captcha',
+    method: 'post',
+    data: {
+      phone
+    }
+  })
+}
+
+export function login(phone, password) {
   return fetch({
     url: '/user/login',
     method: 'post',
     data: {
-      username,
+      phone,
       password
     }
   })

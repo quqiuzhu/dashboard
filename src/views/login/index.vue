@@ -1,8 +1,8 @@
 <template>
   <el-form :model="loginForm" :rules="loginRules" ref="loginForm" label-position="left" label-width="0px" class="login-container">
     <h3 class="title">不鸟科技·管理系统</h3>
-    <el-form-item prop="username">
-      <el-input type="text" v-model="loginForm.username" auto-complete="off" placeholder="手机号"></el-input>
+    <el-form-item prop="phone">
+      <el-input type="text" v-model="loginForm.phone" auto-complete="off" placeholder="手机号"></el-input>
     </el-form-item>
     <el-form-item prop="code" v-if="sms">
       <el-input type="text" v-model="loginForm.code" auto-complete="off" placeholder="验证码">
@@ -24,7 +24,8 @@
       </el-col>
       <el-col :span="4">
         <el-tooltip :content="'使用验证码登录'" placement="right">
-          <el-switch v-model="sms" on-text="" off-text="">
+          <el-switch v-model="sms" on-text="" off-text=""
+           @change="clearSmsCode">
           </el-switch>
         </el-tooltip>
       </el-col>
@@ -38,6 +39,7 @@
 
 <script>
 import { isvalidPhone } from '@/utils/validate'
+import { captcha } from '@/api/login'
 
 export default {
   data() {
@@ -59,12 +61,12 @@ export default {
     return {
       logining: false,
       loginForm: {
-        username: '',
+        phone: '',
         password: '',
         code: ''
       },
       loginRules: {
-        username: [{ required: true, trigger: 'blur', validator: validateUsername }],
+        phone: [{ required: true, trigger: 'blur', validator: validateUsername }],
         password: [{ required: true, trigger: 'blur', validator: validatePass }]
       },
       sms: false,
@@ -82,6 +84,9 @@ export default {
     }
   },
   methods: {
+    clearSmsCode() {
+      this.loginForm.code = ''
+    },
     handleLogin() {
       this.$refs.loginForm.validate(valid => {
         if (valid) {
@@ -100,6 +105,9 @@ export default {
     },
     handleSendSms() {
       if (!this.smsSending) {
+        captcha(this.loginForm.phone).then(response => {
+
+        })
         this.smsSending = true
         this.time = 60
         this.timer()

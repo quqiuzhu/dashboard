@@ -12,7 +12,9 @@
     </el-col>
     <el-col :span="4" class="userinfo">
       <el-dropdown trigger="hover">
-        <span class="el-dropdown-link userinfo-inner"><img src="https://avatars3.githubusercontent.com/u/5006296?s=460&v=4" /> 屈秋竹 </span>
+        <span class="el-dropdown-link userinfo-inner"><img :src="avatar" />
+          {{name}}
+        </span>
         <el-dropdown-menu slot="dropdown">
           <el-dropdown-item>我的消息</el-dropdown-item>
           <el-dropdown-item>设置</el-dropdown-item>
@@ -30,6 +32,7 @@ export default {
     computed: {
       ...mapGetters([
         'sidebar',
+        'name',
         'avatar'
       ]),
       sidebar() {
