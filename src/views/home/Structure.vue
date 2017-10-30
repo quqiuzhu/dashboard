@@ -15,10 +15,10 @@
 
 
 <script>
-import { Navbar, Sidebar, AppMain, AppHeader } from '@/views/layout'
+import { Navbar, Sidebar, AppMain, AppHeader } from '@/views/home'
 
 export default {
-  name: 'layout',
+  name: 'structure',
   components: {
     Navbar,
     Sidebar,

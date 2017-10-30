@@ -21,8 +21,7 @@ const user = {
     Login({ commit }, userInfo) {
       const phone = userInfo.phone.trim()
       return new Promise((resolve, reject) => {
-        login(phone, userInfo.password).then(response => {
-          const data = response.data
+        login(phone, userInfo.password).then(data => {
           setToken(data.token)
           let avatar = data.user.avatar
           let user = {

@@ -38,26 +38,11 @@
 </template>
 
 <script>
-import { isvalidPhone } from '@/utils/validate'
+import { phoneValidator, passwordValidator } from '@/utils/validate'
 import { captcha } from '@/api/login'
 
 export default {
   data() {
-    const validateUsername = (rule, value, callback) => {
-      if (!isvalidPhone(value)) {
-        callback(new Error('请输入正确的手机号'))
-      } else {
-        callback()
-      }
-    }
-    const validatePass = (rule, value, callback) => {
-      if (value.length < 6) {
-        callback(new Error('密码不能小于6位'))
-      } else {
-        callback()
-      }
-    }
-
     return {
       logining: false,
       loginForm: {
@@ -66,8 +51,8 @@ export default {
         code: ''
       },
       loginRules: {
-        phone: [{ required: true, trigger: 'blur', validator: validateUsername }],
-        password: [{ required: true, trigger: 'blur', validator: validatePass }]
+        phone: [{ required: true, trigger: 'blur', validator: phoneValidator }],
+        password: [{ required: true, trigger: 'blur', validator: passwordValidator }]
       },
       sms: false,
       smsSending: false,
