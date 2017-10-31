@@ -1,8 +1,7 @@
 import axios from 'axios'
 import Qs from 'qs'
+import store from '@/store'
 import { Message, MessageBox } from 'element-ui'
-import store from '../store'
-import { getToken } from '@/utils/auth'
 
 // 创建axios实例
 const service = axios.create({
@@ -20,7 +19,7 @@ const service = axios.create({
 // request拦截器
 service.interceptors.request.use(config => {
   if (store.getters.token) {
-    config.headers['token'] = getToken() // 让每个请求携带自定义token
+    config.headers['token'] = store.getters.token
   }
   return config
 }, error => {

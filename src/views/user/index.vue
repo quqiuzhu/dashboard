@@ -21,7 +21,9 @@
 			</el-table-column>
 			<el-table-column prop="id" label="ID" width="80" sortable>
 			</el-table-column>
-			<el-table-column prop="phone" label="电话" width="180">
+			<el-table-column prop="name" label="名字" width="120">
+			</el-table-column>
+			<el-table-column prop="phone" label="电话" width="160">
 			</el-table-column>
 			<el-table-column prop="regTime" label="注册时间" min-width="180">
 			</el-table-column>
@@ -41,7 +43,11 @@
 		</el-col>
 
 		<el-dialog title="编辑" v-model="editFormVisible" :close-on-click-modal="false" :show-close="false">
-			<user-editor :onAction = "handleEditAction"></user-editor>
+			<user-editor
+				:onAction="handleEditAction"
+				:user="editingUser"
+				:isEditing="true">
+			</user-editor>
 		</el-dialog>
 
 		<el-dialog title="新增" v-model="addFormVisible" :close-on-click-modal="false" :show-close="false">
@@ -53,7 +59,7 @@
 
 <script>
 import UserEditor from './editor'
-import { users } from '@/api/user'
+import { users, removeUser, batchRemoveUser } from '@/api/user'
 
 export default {
 	components: { UserEditor },
@@ -68,8 +74,10 @@ export default {
       listLoading: false,
       sels: [],//列表选中列
 
+			addFormVisible: false,//新增界面是否显示
+
       editFormVisible: false,//编辑界面是否显示
-      addFormVisible: false,//新增界面是否显示
+			editingUser: {}
     }
   },
   created() {
@@ -110,55 +118,24 @@ export default {
         type: 'warning'
       }).then(() => {
         this.listLoading = true;
-        //NProgress.start();
-        let para = { id: row.id };
-        removeUser(para).then((res) => {
+        removeUser(row.id).then((res) => {
           this.listLoading = false;
-          //NProgress.done();
-          this.$message({
-            message: '删除成功',
-            type: 'success'
-          });
-          this.getUsers();
-        });
-      }).catch(() => {
-
-      });
-    },
-    //显示编辑界面
-    handleEdit: function (index, row) {
-      this.editFormVisible = true;
-      this.editForm = Object.assign({}, row);
+          this.$message({message: '删除成功', type: 'success'})
+        }).catch(() => {
+					this.listLoading = false;
+	      });
+      })
     },
 		handleAddAction: function (submitSuccess) {
       this.addFormVisible = false;
     },
+		//显示编辑界面
+    handleEdit: function (index, row) {
+      this.editFormVisible = true;
+      this.editingUser = Object.assign({}, row);
+    },
 		handleEditAction: function (submitSuccess) {
       this.editFormVisible = false;
-    },
-    //编辑
-    editSubmit: function () {
-      this.$refs.editForm.validate((valid) => {
-        if (valid) {
-          this.$confirm('确认提交吗？', '提示', {}).then(() => {
-            this.editLoading = true;
-            //NProgress.start();
-            let para = Object.assign({}, this.editForm);
-            para.birth = (!para.birth || para.birth == '') ? '' : util.formatDate.format(new Date(para.birth), 'yyyy-MM-dd');
-            editUser(para).then((res) => {
-              this.editLoading = false;
-              //NProgress.done();
-              this.$message({
-                message: '提交成功',
-                type: 'success'
-              });
-              this.$refs['editForm'].resetFields();
-              this.editFormVisible = false;
-              this.getUsers();
-            });
-          });
-        }
-      });
     },
     selsChange: function (sels) {
       this.sels = sels;
@@ -167,23 +144,16 @@ export default {
     batchRemove: function () {
       var ids = this.sels.map(item => item.id).toString();
       this.$confirm('确认删除选中记录吗？', '提示', {
-        type: 'warning'
+  			type: 'warning'
       }).then(() => {
         this.listLoading = true;
-        //NProgress.start();
-        let para = { ids: ids };
-        batchRemoveUser(para).then((res) => {
+        batchRemoveUser(ids).then((res) => {
           this.listLoading = false;
-          //NProgress.done();
-          this.$message({
-            message: '删除成功',
-            type: 'success'
-          });
-          this.getUsers();
-        });
-      }).catch(() => {
-
-      });
+          this.$message({message: '删除成功', type: 'success'})
+        }).catch(() => {
+						this.listLoading = false;
+	      })
+      })
     }
   }
 }

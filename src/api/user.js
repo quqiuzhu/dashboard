@@ -30,3 +30,20 @@ export function updateUser(id, user) {
     data: user
   })
 }
+
+export function removeUser(id) {
+  return fetch({
+    url: '/user/'+id,
+    method: 'delete'
+  })
+}
+
+export function batchRemoveUser(ids) {
+  return fetch({
+    url: '/users',
+    method: 'delete',
+    data: {
+      ids: ids
+    }
+  })
+}

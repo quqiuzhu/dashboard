@@ -1,16 +1,16 @@
 <template>
-  <el-form :model="form" label-width="80px" :rules="formRules" ref="form">
+  <el-form :model="user" label-width="80px" :rules="formRules" ref="form">
     <el-form-item label="名字" prop="name">
-      <el-input v-model="form.name" auto-complete="off"></el-input>
+      <el-input v-model="user.name" auto-complete="off"></el-input>
     </el-form-item>
     <el-form-item label="电话" prop="phone">
-      <el-input v-model="form.phone" auto-complete="off"></el-input>
+      <el-input v-model="user.phone" auto-complete="off"></el-input>
     </el-form-item>
     <el-form-item label="邮箱" prop="mail">
-      <el-input v-model="form.mail" auto-complete="off"></el-input>
+      <el-input v-model="user.mail" auto-complete="off"></el-input>
     </el-form-item>
-    <el-form-item label="密码" prop="password">
-      <el-input type="password" v-model="form.password" auto-complete="off">
+    <el-form-item label="密码" prop="password" v-if="!isEditing">
+      <el-input type="password" v-model="user.password" auto-complete="off">
       </el-input>
     </el-form-item>
     <el-form-item>
@@ -22,12 +22,27 @@
 </template>
 
 <script>
-import { addUser } from '@/api/user'
+import { addUser, updateUser } from '@/api/user'
 import { phoneValidator, passwordValidator, nameValidator } from '@/utils/validate'
 
 export default {
   name: 'UserEditor',
   props: {
+    isEditing: {
+      type: Boolean,
+      default: false
+    },
+    user: {
+      type: Object,
+      default: function () {
+        return {
+          name: '',
+          phone: '',
+          mail: '',
+          password: ''
+        }
+      }
+    },
     onAction: {
       type: Function,
       default: null
@@ -46,39 +61,32 @@ export default {
         password: [
           { required: true, trigger: 'blur', validator: passwordValidator }
         ],
-      },
-      //新增界面数据
-      form: {
-        name: '',
-        phone: '',
-        mail: '',
-        password: ''
       }
     }
   },
   methods: {
     cancel: function () {
       this.$refs['form'].resetFields();
-      if (this.onAction) {
-        this.onAction(false)
-      }
+      this.onAction(false)
     },
     submit: function () {
       this.$refs.form.validate((valid) => {
         if (valid) {
-          this.$confirm('确认添加吗？', '提示', {}).then(() => {
+          let message = this.isEditing ? '确认修改吗' : '确认添加吗？'
+          this.$confirm(message, '提示', {}).then(() => {
             this.loading = true;
-            let user = Object.assign({}, this.form);
-            addUser(user).then((res) => {
+            let user = Object.assign({}, this.user);
+            let api = this.isEditing ? updateUser(user.id, user) : addUser(user)
+            api.then((res) => {
               this.loading = false;
               this.$message({
-                message: '添加成功',
+                message: '提交成功',
                 type: 'success'
               });
               this.$refs['form'].resetFields();
-              if (this.onAction) {
-                this.onAction(true)
-              }
+              this.onAction(true)
+            }).catch(() => {
+              this.loading = false
             });
           });
         }
