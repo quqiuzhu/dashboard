@@ -2,21 +2,24 @@
 	<section>
 		<!--工具条-->
 		<el-col :span="24" class="toolbar" style="padding-bottom: 0px;">
-			<el-form :inline="true" :model="filters">
+			<el-form :inline="true">
 				<el-form-item>
-					<el-input v-model="filters.name" placeholder="姓名"></el-input>
+					<el-input :on-icon-click="search" v-model="keywords" placeholder="ID/名字/电话"></el-input>
 				</el-form-item>
 				<el-form-item>
-					<el-button type="primary" v-on:click="getUsers">查询</el-button>
+					<el-button type="primary" icon="search" v-on:click="search"/>
 				</el-form-item>
 				<el-form-item>
-					<el-button type="primary" @click="addFormVisible = true">新增</el-button>
+					<el-button type="primary" icon="plus" @click="add"/>
+				</el-form-item>
+				<el-form-item style="float:right;">
+					<el-button @click="fetchUsers"><i class="fa fa-refresh" aria-hidden="true"></i></el-button>
 				</el-form-item>
 			</el-form>
 		</el-col>
 
 		<!--列表-->
-		<el-table :data="users" highlight-current-row v-loading="listLoading" @selection-change="selsChange" style="width: 100%;">
+		<el-table :data="items" highlight-current-row v-loading="loading" @selection-change="selectionChanged" style="width: 100%;">
 			<el-table-column type="selection" width="55">
 			</el-table-column>
 			<el-table-column prop="id" label="ID" width="80" sortable>
@@ -27,31 +30,40 @@
 			</el-table-column>
 			<el-table-column prop="regTime" label="注册时间" min-width="180">
 			</el-table-column>
+			<el-table-column type="expand">
+			 <template scope="props">
+				 <el-form label-position="left" inline class="user-expand">
+					 <el-form-item label="邮箱">
+						 <span>{{ props.row.mail }}</span>
+					 </el-form-item>
+					 <el-form-item label="登录时间">
+						 <span>{{ props.row.logTime }}</span>
+					 </el-form-item>
+				 </el-form>
+			 </template>
+			</el-table-column>
 			<el-table-column label="操作" width="150">
 				<template scope="scope">
-					<el-button size="small" @click="handleEdit(scope.$index, scope.row)">编辑</el-button>
-					<el-button type="danger" size="small" @click="handleDel(scope.$index, scope.row)">删除</el-button>
+					<el-button size="small" @click="edit(scope.$index, scope.row)">编辑</el-button>
+					<el-button type="danger" size="small" @click="remove(scope.$index, scope.row)">删除</el-button>
 				</template>
 			</el-table-column>
 		</el-table>
 
 		<!--工具条-->
 		<el-col :span="24" class="toolbar">
-			<el-button type="danger" @click="batchRemove" :disabled="this.sels.length===0">批量删除</el-button>
-			<el-pagination layout="prev, pager, next" @current-change="handleCurrentChange" :page-size="20" :total="total" style="float:right;">
+			<el-button type="danger" @click="batchRemove" :disabled="this.selection.length===0">批量删除</el-button>
+			<el-pagination layout="prev, pager, next" @current-change="pageChanged" :page-size="20" :total="total" style="float:right;">
 			</el-pagination>
 		</el-col>
 
-		<el-dialog title="编辑" v-model="editFormVisible" :close-on-click-modal="false" :show-close="false">
+		<el-dialog :title="editeTitle"
+		v-model="editerVisible"
+		:close-on-click-modal="false">
 			<user-editor
-				:onAction="handleEditAction"
-				:user="editingUser"
-				:isEditing="true">
+				:onAction="onEdited"
+				:user="editingUser">
 			</user-editor>
-		</el-dialog>
-
-		<el-dialog title="新增" v-model="addFormVisible" :close-on-click-modal="false" :show-close="false">
-			<user-editor :onAction = "handleAddAction"></user-editor>
 		</el-dialog>
 
 	</section>
@@ -65,96 +77,125 @@ export default {
 	components: { UserEditor },
   data() {
     return {
-      filters: {
-        name: ''
+      params: {
+        search: '',
+				start: 0,
+				limit: 20
       },
-      users: [],
+
+			keywords: '',
+      items: [],
       total: 0,
-      page: 1,
-      listLoading: false,
-      sels: [],//列表选中列
+      loading: false,
+      selection: [],
 
-			addFormVisible: false,//新增界面是否显示
-
-      editFormVisible: false,//编辑界面是否显示
+			editeTitle: '',
+			editerVisible: false,
 			editingUser: {}
     }
   },
   created() {
-    this.fetchData()
+    this.fetchUsers()
   },
   methods: {
-    fetchData() {
-      this.listLoading = true
-      users(this.listQuery).then(data => {
-        this.users = data.list
-        this.listLoading = false
-      })
+    fetchUsers() {
+      this.loading = true
+      users(this.params).then(data => {
+        this.items = data.list
+				this.total = data.total
+        this.loading = false
+      }).catch(() => {
+				this.loading = false;
+			})
     },
 
-    handleCurrentChange(val) {
-      this.page = val;
-      this.getUsers();
+    pageChanged(page) {
+      this.params.start = (page - 1) * this.params.limit;
+      this.fetchUsers()
     },
 
-    //获取用户列表
-    getUsers() {
-      let para = {
-        page: this.page,
-        name: this.filters.name
-      };
-      this.listLoading = true;
-      //NProgress.start();
-      getUserListPage(para).then((res) => {
-        this.total = res.data.total;
-        this.users = res.data.users;
-        this.listLoading = false;
-        //NProgress.done();
-      });
+		selectionChanged: function (selection) {
+			this.selection = selection;
+		},
+
+    //搜索
+    search() {
+			this.params.start = 0
+      this.params.search = this.keywords
+			this.fetchUsers()
     },
-    //删除
-    handleDel: function (index, row) {
+
+		//添加
+		add: function () {
+			this.editeTitle = '添加'
+      this.editerVisible = true
+			this.editingUser = Object.assign({}, {name: '', phone: '', mail: '', password: ''})
+    },
+
+		//编辑
+    edit: function (index, row) {
+			this.editeTitle = '编辑'
+      this.editerVisible = true;
+      this.editingUser = Object.assign({}, row);
+    },
+		onEdited: function (valueChanged) {
+      this.editerVisible = false;
+			if (!this.editingUser.id) {
+				this.params.start = 0
+				this.params.search = ''
+			}
+			if (valueChanged) {
+				this.fetchUsers()
+			}
+    },
+
+		//删除
+    remove: function (index, row) {
       this.$confirm('确认删除该记录吗?', '提示', {
         type: 'warning'
       }).then(() => {
-        this.listLoading = true;
-        removeUser(row.id).then((res) => {
-          this.listLoading = false;
+        this.loading = true;
+        this.removeUser(row.id).then((res) => {
+          this.loading = false;
           this.$message({message: '删除成功', type: 'success'})
+					fetchUsers()
         }).catch(() => {
-					this.listLoading = false;
-	      });
+					this.loading = false;
+	      })
       })
     },
-		handleAddAction: function (submitSuccess) {
-      this.addFormVisible = false;
-    },
-		//显示编辑界面
-    handleEdit: function (index, row) {
-      this.editFormVisible = true;
-      this.editingUser = Object.assign({}, row);
-    },
-		handleEditAction: function (submitSuccess) {
-      this.editFormVisible = false;
-    },
-    selsChange: function (sels) {
-      this.sels = sels;
-    },
+
     //批量删除
     batchRemove: function () {
-      var ids = this.sels.map(item => item.id).toString();
+      var ids = this.selection.map(item => item.id).toString();
       this.$confirm('确认删除选中记录吗？', '提示', {
   			type: 'warning'
       }).then(() => {
-        this.listLoading = true;
+        this.loading = true;
         batchRemoveUser(ids).then((res) => {
-          this.listLoading = false;
+          this.loading = false;
           this.$message({message: '删除成功', type: 'success'})
+					this.fetchUsers()
         }).catch(() => {
-						this.listLoading = false;
+						this.loading = false;
 	      })
       })
     }
   }
 }
 </script>
+
+<style lang="scss" scope>
+.user-expand {
+	font-size: 0;
+	label {
+    width: 90px;
+    color: #99a9bf;
+  }
+	.el-form-item {
+    margin-right: 0;
+    margin-bottom: 0;
+    width: 50%;
+  }
+}
+</style>

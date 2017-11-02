@@ -4,7 +4,7 @@ export function users(params) {
   return fetch({
     url: '/users',
     method: 'get',
-    params
+    params: params
   })
 }
 

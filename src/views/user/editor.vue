@@ -9,7 +9,7 @@
     <el-form-item label="邮箱" prop="mail">
       <el-input v-model="user.mail" auto-complete="off"></el-input>
     </el-form-item>
-    <el-form-item label="密码" prop="password" v-if="!isEditing">
+    <el-form-item label="密码" prop="password" v-if="!user.id">
       <el-input type="password" v-model="user.password" auto-complete="off">
       </el-input>
     </el-form-item>
@@ -28,10 +28,6 @@ import { phoneValidator, passwordValidator, nameValidator } from '@/utils/valida
 export default {
   name: 'UserEditor',
   props: {
-    isEditing: {
-      type: Boolean,
-      default: false
-    },
     user: {
       type: Object,
       default: function () {
@@ -72,22 +68,16 @@ export default {
     submit: function () {
       this.$refs.form.validate((valid) => {
         if (valid) {
-          let message = this.isEditing ? '确认修改吗' : '确认添加吗？'
-          this.$confirm(message, '提示', {}).then(() => {
-            this.loading = true;
-            let user = Object.assign({}, this.user);
-            let api = this.isEditing ? updateUser(user.id, user) : addUser(user)
-            api.then((res) => {
-              this.loading = false;
-              this.$message({
-                message: '提交成功',
-                type: 'success'
-              });
-              this.$refs['form'].resetFields();
-              this.onAction(true)
-            }).catch(() => {
-              this.loading = false
-            });
+          this.loading = true;
+          let user = Object.assign({}, this.user);
+          let api = user.id ? updateUser(user.id, user) : addUser(user)
+          api.then((res) => {
+            this.loading = false;
+            this.$message({message: '提交成功',type: 'success'});
+            this.onAction(true)
+            this.$refs['form'].resetFields();
+          }).catch(() => {
+            this.loading = false
           });
         }
       });
