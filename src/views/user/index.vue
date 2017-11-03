@@ -53,7 +53,7 @@
 		<!--工具条-->
 		<el-col :span="24" class="toolbar">
 			<el-button type="danger" @click="batchRemove" :disabled="this.selection.length===0">批量删除</el-button>
-			<el-pagination layout="prev, pager, next" @current-change="pageChanged" :page-size="20" :total="total" style="float:right;">
+			<el-pagination layout="prev, pager, next" @current-change="pageChanged" :page-size="params.count" :total="total" :current-page="page" style="float:right;">
 			</el-pagination>
 		</el-col>
 
@@ -80,12 +80,13 @@ export default {
       params: {
         search: '',
 				start: 0,
-				limit: 20
+				count: 20
       },
 
 			keywords: '',
       items: [],
       total: 0,
+			page: 1,
       loading: false,
       selection: [],
 
@@ -110,7 +111,7 @@ export default {
     },
 
     pageChanged(page) {
-      this.params.start = (page - 1) * this.params.limit;
+      this.params.start = (page - 1) * this.params.count;
       this.fetchUsers()
     },
 
@@ -141,7 +142,7 @@ export default {
 		onEdited: function (valueChanged) {
       this.editerVisible = false;
 			if (!this.editingUser.id) {
-				this.params.start = 0
+				this.page = 1
 				this.params.search = ''
 			}
 			if (valueChanged) {
