@@ -63,10 +63,10 @@ export default {
             cursor: pointer;
             color:#fff;
             img {
-              width: 40px;
-              height: 40px;
+              width: 36px;
+              height: 36px;
               border-radius: 20px;
-              margin: 10px 0px 10px 10px;
+              margin: 12px 10px 24px 10px;
               float: right;
             }
         }

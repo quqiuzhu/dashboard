@@ -24,9 +24,10 @@ const user = {
         login(phone, userInfo.password).then(data => {
           setToken(data.token)
           let avatar = data.user.avatar
+          let name = data.user.name
           let user = {
             roles: data.roles,
-            name: data.user.phone,
+            name: name ? name.slice(-4) : data.user.phone.slice(-4),
             avatar: avatar ? avatar : 'static/avatar.png'
           }
           setUser(user)
