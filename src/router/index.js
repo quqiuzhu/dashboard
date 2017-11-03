@@ -22,7 +22,7 @@ export const constantRouterMap = [
     path: '/dashboard',
     component: Structure,
     redirect: 'dashboard/index',
-    icon: 'tubiao',
+    icon: 'fa fa-bar-chart icon',
     noDropdown: true,
     children: [{
       path: 'index',
@@ -35,7 +35,7 @@ export const constantRouterMap = [
     path: '/users',
     component: Structure,
     redirect: '/users/index',
-    icon: 'zujian',
+    icon: 'fa fa-users icon',
     noDropdown: true,
     children: [{
       path: 'index',

@@ -18,14 +18,11 @@
 </template>
 
 <script>
- import img_404 from '@/assets/404_images/404.png'
- import img_404_cloud from '@/assets/404_images/404_cloud.png'
-
  export default {
    data() {
      return {
-       img_404,
-       img_404_cloud
+       img_404: '/static/404_images/404.png',
+       img_404_cloud: '/static/404_images/404_cloud.png'
      }
    },
    computed: {

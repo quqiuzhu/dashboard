@@ -80,7 +80,7 @@ export default {
       params: {
         search: '',
 				start: 0,
-				count: 20
+				count: 10
       },
 
 			keywords: '',

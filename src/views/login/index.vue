@@ -24,8 +24,11 @@
       </el-col>
       <el-col :span="4">
         <el-tooltip :content="'使用验证码登录'" placement="right">
-          <el-switch v-model="sms" on-text="" off-text=""
-           @change="clearSmsCode">
+          <el-switch
+            v-model="sms" on-text="" off-text=""
+            on-color="#20A0FF"
+            off-color="#58B7FF" 
+            @change="clearSmsCode">
           </el-switch>
         </el-tooltip>
       </el-col>
