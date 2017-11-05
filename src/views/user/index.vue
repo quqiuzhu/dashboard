@@ -26,6 +26,23 @@
 			</el-table-column>
 			<el-table-column prop="name" label="名字" width="120">
 			</el-table-column>
+			<el-table-column label="会员" width="100">
+				<template scope="scope">
+					<el-popover
+					  ref="member-popover"
+					  placement="top-start"
+					  :title="scope.row.name"
+					  width="200"
+					  trigger="hover"
+					  :content="scope.row.member.level ? '到期时间:' + scope.row.member.expire_time : '还未开通会员'">
+					</el-popover>
+
+					<i class="fa fa-diamond" aria-hidden="true" :style="scope.row.member.level ? 'color:red;' : 'color:gray;'"></i>
+
+					<el-button type="text" size="small" v-popover:member-popover @click="member(scope.$index, scope.row)">
+						{{scope.row.member.level ? '续费' : '升级'}}</el-button>
+				</template>
+			</el-table-column>
 			<el-table-column prop="phone" label="电话" width="160">
 			</el-table-column>
 			<el-table-column prop="regTime" label="注册时间" min-width="180">
@@ -42,9 +59,10 @@
 				 </el-form>
 			 </template>
 			</el-table-column>
-			<el-table-column label="操作" width="150">
+			<el-table-column label="操作" width="200">
 				<template scope="scope">
 					<el-button size="small" @click="edit(scope.$index, scope.row)">编辑</el-button>
+					<el-button size="small" @click="resetPassword(scope.$index, scope.row)">重置</el-button>
 					<el-button type="danger" size="small" @click="remove(scope.$index, scope.row)">删除</el-button>
 				</template>
 			</el-table-column>
@@ -66,15 +84,25 @@
 			</user-editor>
 		</el-dialog>
 
+		<el-dialog title="会员升级/续费"
+		v-model="memberVisible"
+		:close-on-click-modal="false">
+			<user-member
+				:onAction="onMemberUpdate"
+				:uid="memberUid">
+			</user-member>
+		</el-dialog>
+
 	</section>
 </template>
 
 <script>
 import UserEditor from './editor'
-import { users, removeUser, batchRemoveUser } from '@/api/user'
+import UserMember from './member'
+import { users, removeUser, batchRemoveUser, updatePassword } from '@/api/user'
 
 export default {
-	components: { UserEditor },
+	components: { UserEditor, UserMember },
   data() {
     return {
       params: {
@@ -92,7 +120,10 @@ export default {
 
 			editeTitle: '',
 			editerVisible: false,
-			editingUser: {}
+			editingUser: {},
+
+			memberVisible: false,
+			memberUid: 0
     }
   },
   created() {
@@ -150,13 +181,42 @@ export default {
 			}
     },
 
-		//删除
-    remove: function (index, row) {
-      this.$confirm('确认删除该记录吗?', '提示', {
+		//会员升级
+		member: function (index, row) {
+			this.memberUid = row.id;
+			this.memberVisible = true;
+		},
+		onMemberUpdate: function (valueChanged) {
+			this.memberVisible = false;
+			if (valueChanged) {
+				this.fetchUsers()
+			}
+		},
+
+		//重置密码
+		resetPassword: function (index, row) {
+			let message = '确认要重置「' + row.name + '」的密码吗?'
+      this.$confirm(message, '提示', {
         type: 'warning'
       }).then(() => {
         this.loading = true;
-        this.removeUser(row.id).then((res) => {
+        updatePassword(row.id, '123456').then((res) => {
+          this.loading = false;
+          this.$message({message: '重置密码成功', type: 'success'})
+        }).catch(() => {
+					this.loading = false;
+	      })
+      })
+		},
+
+		//删除
+    remove: function (index, row) {
+			let message = '确认要删除「' + row.name + '」吗?'
+      this.$confirm(message, '提示', {
+        type: 'warning'
+      }).then(() => {
+        this.loading = true;
+        removeUser(row.id).then((res) => {
           this.loading = false;
           this.$message({message: '删除成功', type: 'success'})
 					fetchUsers()
@@ -168,8 +228,10 @@ export default {
 
     //批量删除
     batchRemove: function () {
-      var ids = this.selection.map(item => item.id).toString();
-      this.$confirm('确认删除选中记录吗？', '提示', {
+      var ids = this.selection.map(item => item.id).toString()
+			var names = this.selection.map(item => item.name).toString()
+			let message = '确认要删除「' + names + '」吗?'
+      this.$confirm(message, '提示', {
   			type: 'warning'
       }).then(() => {
         this.loading = true;

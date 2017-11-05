@@ -27,7 +27,7 @@
           <el-switch
             v-model="sms" on-text="" off-text=""
             on-color="#20A0FF"
-            off-color="#58B7FF" 
+            off-color="#58B7FF"
             @change="clearSmsCode">
           </el-switch>
         </el-tooltip>
@@ -93,9 +93,7 @@ export default {
     },
     handleSendSms() {
       if (!this.smsSending) {
-        captcha(this.loginForm.phone).then(response => {
-
-        })
+        captcha(this.loginForm.phone).then(response => {})
         this.smsSending = true
         this.time = 60
         this.timer()

@@ -47,3 +47,23 @@ export function batchRemoveUser(ids) {
     }
   })
 }
+
+export function updateMember(uid, days) {
+  return fetch({
+    url: '/user/'+uid+'/member',
+    method: 'put',
+    data: {
+      days: days
+    }
+  })
+}
+
+export function updatePassword(uid, password) {
+  return fetch({
+    url: '/user/'+uid+'/password',
+    method: 'put',
+    data: {
+      password: password
+    }
+  })
+}

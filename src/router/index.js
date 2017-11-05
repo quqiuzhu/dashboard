@@ -57,7 +57,6 @@ const router = new Router({
 
 const whiteList = ['/login'] //不重定向白名单
 router.beforeEach((to, from, next) => {
-  // NProgress.start()
   if (getToken()) {
     if (to.path === '/login') {
       next({ path: '/' })
@@ -69,7 +68,6 @@ router.beforeEach((to, from, next) => {
       next()
     } else {
       next('/login')
-      NProgress.done()
     }
   }
 })
