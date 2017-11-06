@@ -58,3 +58,21 @@ export function passwordValidator(rule, value, callback) {
     callback()
   }
 }
+
+
+export function titleValidator(rule, value, callback) {
+  if (value.length < 2 || value.length > 16) {
+    callback(new Error('请输入2-16个字'))
+  } else {
+    callback()
+  }
+}
+
+
+export function descriptionValidator(rule, value, callback) {
+  if (value.length < 8 || value.length > 255) {
+    callback(new Error('请输入8-255个字'))
+  } else {
+    callback()
+  }
+}

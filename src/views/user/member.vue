@@ -50,6 +50,11 @@ export default {
         this.loading = false
       });
     }
+  },
+  watch: {
+    uid: function (newUid, oldUid) {
+      this.member.days = 30
+    }
   }
 }
 </script>

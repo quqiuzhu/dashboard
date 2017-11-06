@@ -45,6 +45,48 @@ export const constantRouterMap = [
     }]
   },
 
+  {
+    path: '/orders',
+    component: Structure,
+    redirect: '/orders/index',
+    icon: 'fa fa-list-alt icon',
+    noDropdown: true,
+    children: [{
+      path: 'index',
+      name: '订单管理',
+      component: _import('order/index'),
+      meta: { role: ['admin'] }
+    }]
+  },
+
+  {
+    path: '/servers',
+    component: Structure,
+    redirect: '/servers/index',
+    icon: 'fa fa-heart icon',
+    noDropdown: true,
+    children: [{
+      path: 'index',
+      name: '服务管理',
+      component: _import('server/index'),
+      meta: { role: ['admin'] }
+    }]
+  },
+
+  {
+    path: '/products',
+    component: Structure,
+    redirect: '/products/index',
+    icon: 'fa fa-shopping-bag icon',
+    noDropdown: true,
+    children: [{
+      path: 'index',
+      name: '套餐管理',
+      component: _import('product/index'),
+      meta: { role: ['admin'] }
+    }]
+  },
+
   { path: '/', redirect: '/dashboard', hidden: true },
   { path: '*', redirect: '/404', hidden: true }
 ]
