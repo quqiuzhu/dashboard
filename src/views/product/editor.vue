@@ -6,9 +6,16 @@
     <el-form-item label="描述" prop="description">
       <el-input type="textarea" v-model="product.description" placeholder="请输入套餐描述(8-255个字)" auto-complete="off"></el-input>
     </el-form-item>
+    <el-form-item label="套餐时长">
+    <el-select v-model="product.days" placeholder="请选择套餐时长">
+      <el-option label="一年" value="365"></el-option>
+      <el-option label="半年" value="180"></el-option>
+      <el-option label="三个月" value="90"></el-option>
+    </el-select>
+  </el-form-item>
     <el-form-item label="价格">
       <el-col :span="10">
-      <el-input-number v-model="product.price" auto-complete="off" :min="30" :step="11" :max="1000"></el-input-number>
+      <el-input-number v-model="product.price" auto-complete="off" :min="30" :step="10" :max="1000"></el-input-number>
       </el-col>
       <el-col :span="11">
         <span>原价&nbsp;</span>
@@ -36,8 +43,9 @@ export default {
         return {
           title: '',
           description: '',
-          price: 98,
-          orig_price: 100
+          price: 128,
+          orig_price: 160,
+          days: 365
         }
       }
     },
@@ -69,6 +77,8 @@ export default {
         if (valid) {
           this.loading = true;
           let product = Object.assign({}, this.product);
+          product.price = parseInt(product.price * 100)
+          product.orig_price = parseInt(product.orig_price * 100)
           let api = product.id ? updateProduct(product.id, product) : addProduct(product)
           api.then((res) => {
             this.loading = false;

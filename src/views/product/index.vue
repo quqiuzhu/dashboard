@@ -20,9 +20,11 @@
 			</el-table-column>
 			<el-table-column prop="description" label="描述" min-width="160">
 			</el-table-column>
-			<el-table-column prop="price" label="价格" width="160">
+			<el-table-column prop="price" label="价格" width="80">
 			</el-table-column>
-			<el-table-column prop="orig_price" label="原价" width="160">
+			<el-table-column prop="orig_price" label="原价" width="80">
+			</el-table-column>
+			<el-table-column prop="days" label="时长(天)" width="100">
 			</el-table-column>
 			<el-table-column label="操作" width="100">
 				<template scope="scope">
@@ -98,8 +100,9 @@ export default {
 			this.editingProduct = Object.assign({}, {
 				title: '',
 				description: '',
-				price: 88,
-				orig_price: 100
+				price: 128,
+				orig_price: 160,
+				days: 365
 			})
 		},
 
