@@ -144,7 +144,6 @@ export default {
 		buyPackage: function () {
 			buy(3).then((data) => {
 				this.loading = false;
-				this.$message({message: '购买成功', type: 'success'})
 				WP.click(data)
 				WP.err = function(err) {
 					this.$message({message: '支付失败', type: 'warning'})

@@ -9,3 +9,11 @@ export function buy(type) {
     }
   })
 }
+
+export function orders(params) {
+  return fetch({
+    url: '/counter/orders',
+    method: 'get',
+    params: params
+  })
+}

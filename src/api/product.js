@@ -1,9 +1,10 @@
 import fetch from '@/utils/fetch'
 
-export function products() {
+export function products(params) {
   return fetch({
     url: '/products',
-    method: 'get'
+    method: 'get',
+    params: params
   })
 }
 

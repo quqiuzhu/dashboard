@@ -4,13 +4,13 @@
 		<el-col :span="24" class="toolbar" style="padding-bottom: 0px;">
 			<el-form :inline="true">
 				<el-form-item>
-					<el-input :on-icon-click="search" v-model="keywords" placeholder="ID/名字/电话"></el-input>
+					<el-input :on-icon-click="search" v-model="keywords" placeholder=""></el-input>
 				</el-form-item>
 				<el-form-item>
 					<el-button type="primary" icon="search" v-on:click="search"/>
 				</el-form-item>
 				<el-form-item style="float:right;">
-					<el-button @click="fetchUsers"><i class="fa fa-refresh" aria-hidden="true"></i></el-button>
+					<el-button @click="fetchOrders"><i class="fa fa-refresh" aria-hidden="true"></i></el-button>
 				</el-form-item>
 			</el-form>
 		</el-col>
@@ -21,11 +21,21 @@
 			</el-table-column>
 			<el-table-column prop="id" label="ID" width="80" sortable>
 			</el-table-column>
-			<el-table-column prop="name" label="名字" width="120">
+			<el-table-column label="用户" width="120">
+				<template scope="scope">
+					<span>{{scope.row.owner.name}}</span>
+				</template>
 			</el-table-column>
-			<el-table-column prop="phone" label="电话" width="160">
+			<el-table-column prop="title" label="标题" width="120">
 			</el-table-column>
-			<el-table-column prop="regTime" label="注册时间" min-width="180">
+			<el-table-column prop="price" label="价格" width="80">
+			</el-table-column>
+			<el-table-column prop="create_time" label="创建时间" width="180">
+			</el-table-column>
+			<el-table-column label="状态" min-width="100">
+				<template scope="scope">
+					<span>{{scope.row.status ? '已支付' : '未支付'}}</span>
+				</template>
 			</el-table-column>
 			<el-table-column label="操作" width="200">
 				<template scope="scope">
@@ -45,14 +55,15 @@
 </template>
 
 <script>
-import { users, removeUser, batchRemoveUser, updatePassword } from '@/api/user'
+import { orders } from '@/api/counter'
 
 export default {
 	components: { },
   data() {
     return {
       params: {
-        search: '',
+        uid: 0,
+				status: -1,
 				start: 0,
 				count: 10
       },
@@ -66,12 +77,12 @@ export default {
     }
   },
   created() {
-    this.fetchUsers()
+    this.fetchOrders()
   },
   methods: {
-    fetchUsers() {
+    fetchOrders() {
       this.loading = true
-      users(this.params).then(data => {
+      orders(this.params).then(data => {
         this.items = data.list
 				this.total = data.total
         this.loading = false
@@ -82,7 +93,7 @@ export default {
 
     pageChanged(page) {
       this.params.start = (page - 1) * this.params.count;
-      this.fetchUsers()
+      this.fetchOrders()
     },
 
 		selectionChanged: function (selection) {
@@ -93,7 +104,7 @@ export default {
     search() {
 			this.params.start = 0
       this.params.search = this.keywords
-			this.fetchUsers()
+			this.fetchOrders()
     }
   }
 }
