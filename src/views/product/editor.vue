@@ -15,7 +15,7 @@
   </el-form-item>
     <el-form-item label="价格">
       <el-col :span="10">
-      <el-input-number v-model="product.price" auto-complete="off" :min="30" :step="10" :max="1000"></el-input-number>
+      <el-input-number v-model="product.price" auto-complete="off" :min="0" :step="10" :max="1000"></el-input-number>
       </el-col>
       <el-col :span="11">
         <span>原价&nbsp;</span>

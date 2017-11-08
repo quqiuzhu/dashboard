@@ -35,6 +35,7 @@
 
 		<!--工具条-->
 		<el-col :span="24" class="toolbar">
+			<el-button type="primary" @click="buyPackage">购买</el-button>
 			<el-pagination layout="prev, pager, next" @current-change="pageChanged" :page-size="params.count" :total="total" :current-page="page" style="float:right;">
 			</el-pagination>
 		</el-col>
@@ -53,6 +54,7 @@
 <script>
 import ProductEditor from './editor'
 import { products, removeProduct } from '@/api/product'
+import { buy } from '@/api/counter'
 
 export default {
 	components: { ProductEditor },
@@ -138,6 +140,20 @@ export default {
 				})
 			})
 		},
+
+		buyPackage: function () {
+			buy(3).then((data) => {
+				this.loading = false;
+				this.$message({message: '购买成功', type: 'success'})
+				WP.click(data)
+				WP.err = function(err) {
+					this.$message({message: '支付失败', type: 'warning'})
+					console.log(err);
+				}
+			}).catch(() => {
+				this.loading = false;
+			})
+		}
   }
 }
 </script>
