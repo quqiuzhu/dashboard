@@ -4,7 +4,13 @@
 		<el-col :span="24" class="toolbar" style="padding-bottom: 0px;">
 			<el-form :inline="true">
 				<el-form-item>
-					<el-input :on-icon-click="search" v-model="keywords" placeholder=""></el-input>
+					<el-select @change="search" v-model="params.status" placeholder="支付状态">
+				    <el-option v-for="item in options" :key="item.value" :label="item.label" :value="item.value">
+				    </el-option>
+				  </el-select>
+				</el-form-item>
+				<el-form-item>
+					<el-input v-model="uid" placeholder="用户ID"></el-input>
 				</el-form-item>
 				<el-form-item>
 					<el-button type="primary" icon="search" v-on:click="search"/>
@@ -16,9 +22,7 @@
 		</el-col>
 
 		<!--列表-->
-		<el-table :data="items" highlight-current-row v-loading="loading" @selection-change="selectionChanged" style="width: 100%;">
-			<el-table-column type="selection" width="55">
-			</el-table-column>
+		<el-table :data="items" highlight-current-row v-loading="loading"  style="width: 100%;">
 			<el-table-column prop="id" label="ID" width="80" sortable>
 			</el-table-column>
 			<el-table-column label="用户" width="120">
@@ -37,43 +41,77 @@
 					<span>{{scope.row.status ? '已支付' : '未支付'}}</span>
 				</template>
 			</el-table-column>
-			<el-table-column label="操作" width="200">
+			<el-table-column type="expand">
+			 <template scope="props">
+				 <el-form label-position="left" inline class="order-expand">
+					 <el-form-item label="用户ID">
+						 <span>{{ props.row.owner.id }}</span>
+					 </el-form-item>
+					 <el-form-item label="手机号">
+						 <span>{{ props.row.owner.phone }}</span>
+					 </el-form-item>
+					 <el-form-item label="支付时间">
+						 <span>{{ props.row.pay_time }}</span>
+					 </el-form-item>
+				 </el-form>
+			 </template>
+			</el-table-column>
+			<el-table-column label="操作" width="100">
 				<template scope="scope">
-					<el-button size="small" @click="edit(scope.$index, scope.row)">编辑</el-button>
-					<el-button type="danger" size="small" @click="remove(scope.$index, scope.row)">删除</el-button>
+					<el-button :disabled="scope.row.status?true:false" size="small" @click="updatePrice(scope.$index, scope.row)">改价</el-button>
 				</template>
 			</el-table-column>
 		</el-table>
 
 		<!--工具条-->
 		<el-col :span="24" class="toolbar">
-			<el-button type="danger" @click="batchRemove" :disabled="this.selection.length===0">批量删除</el-button>
 			<el-pagination layout="prev, pager, next" @current-change="pageChanged" :page-size="params.count" :total="total" :current-page="page" style="float:right;">
 			</el-pagination>
 		</el-col>
+
+		<el-dialog title="更改订单价格"
+		v-model="priceVisible"
+		:close-on-click-modal="false">
+			<order-price
+				:onAction="onPriceUpdate"
+				:order="editingOrder">
+			</order-price>
+		</el-dialog>
 	</section>
 </template>
 
 <script>
+import OrderPrice from './price'
 import { orders } from '@/api/counter'
 
 export default {
-	components: { },
+	components: { OrderPrice },
   data() {
     return {
       params: {
         uid: 0,
-				status: -1,
+				status: 0,
 				start: 0,
 				count: 10
       },
 
-			keywords: '',
+			options: [{
+					value: 0,
+					label: '全部'
+				},{
+          value: 1,
+          label: '已支付'
+        }
+			],
+
+			uid: '',
       items: [],
       total: 0,
 			page: 1,
       loading: false,
-      selection: []
+
+			priceVisible: false,
+			editingOrder: {},
     }
   },
   created() {
@@ -96,16 +134,42 @@ export default {
       this.fetchOrders()
     },
 
-		selectionChanged: function (selection) {
-			this.selection = selection;
+		//改价
+		updatePrice: function (index, row) {
+			this.priceVisible = true;
+      this.editingOrder = {
+				id: row.id,
+				price: row.price
+			};
 		},
+		onPriceUpdate: function (valueChanged) {
+      this.priceVisible = false;
+			if (valueChanged) {
+				this.fetchOrders()
+			}
+    },
 
     //搜索
     search() {
 			this.params.start = 0
-      this.params.search = this.keywords
+      this.params.uid = this.uid
 			this.fetchOrders()
     }
   }
 }
 </script>
+
+<style lang="scss" scope>
+.order-expand {
+	font-size: 0;
+	label {
+    width: 70px;
+    color: #99a9bf;
+  }
+	.el-form-item {
+    margin-right: 0;
+    margin-bottom: 0;
+    width: 33%;
+  }
+}
+</style>

@@ -4,7 +4,7 @@
 		<el-col :span="24" class="toolbar" style="padding-bottom: 0px;">
 			<el-form :inline="true">
 				<el-form-item>
-					<el-input :on-icon-click="search" v-model="keywords" placeholder="ID/名字/电话"></el-input>
+					<el-input v-model="keywords" placeholder="ID/名字/电话"></el-input>
 				</el-form-item>
 				<el-form-item>
 					<el-button type="primary" icon="search" v-on:click="search"/>

@@ -17,3 +17,11 @@ export function orders(params) {
     params: params
   })
 }
+
+export function updateOrderPrice(id, order) {
+  return fetch({
+    url: '/order/'+id,
+    method: 'put',
+    data: order
+  })
+}

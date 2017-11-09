@@ -76,3 +76,11 @@ export function descriptionValidator(rule, value, callback) {
     callback()
   }
 }
+
+export function idValidator(rule, value, callback) {
+  if (Number.isInteger(value)) {
+    callback(new Error('请输入数字ID'))
+  } else {
+    callback()
+  }
+}
