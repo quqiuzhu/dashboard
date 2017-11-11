@@ -40,7 +40,7 @@ export default {
 
 <style rel="stylesheet/scss" lang="scss" scoped>
   .breadcrumb-container {
-    margin-bottom: 20px;
+    margin-bottom: 10px;
     .title {
       width: 200px;
       float: left;
@@ -50,6 +50,7 @@ export default {
     .breadcrumb-inner {
       float: right;
       display: inline-block;
+      line-height: 20px;
     }
 }
 </style>

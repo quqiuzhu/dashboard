@@ -4,13 +4,13 @@
 		<el-col :span="24" class="toolbar" style="padding-bottom: 0px;">
 			<el-form :inline="true">
 				<el-form-item>
-					<el-select @change="search" v-model="params.status" placeholder="支付状态">
+					<el-select @change="search" v-model="params.status" placeholder="支付状态" style="width: 90px;">
 				    <el-option v-for="item in options" :key="item.value" :label="item.label" :value="item.value">
 				    </el-option>
 				  </el-select>
 				</el-form-item>
 				<el-form-item>
-					<el-input v-model="uid" placeholder="用户ID"></el-input>
+					<el-input v-model="uid" placeholder="用户ID" style="width: 140px;"></el-input>
 				</el-form-item>
 				<el-form-item>
 					<el-button type="primary" icon="search" v-on:click="search"/>
