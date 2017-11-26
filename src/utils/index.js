@@ -1,8 +1,4 @@
-/**
- * Created by jiachenpan on 16/11/18.
- */
-
- export function parseTime(time, cFormat) {
+export function parseTime(time, cFormat) {
    if (arguments.length === 0) {
      return null
    }
@@ -55,4 +51,18 @@
    } else {
      return d.getMonth() + 1 + '月' + d.getDate() + '日' + d.getHours() + '时' + d.getMinutes() + '分'
    }
+ }
+
+ export function server_status(status) {
+   switch(status) {
+       case 0:
+           return '未上线'
+       case 1:
+           return '准备中'
+       case 2:
+           return '已就绪'
+       case 3:
+           return '正在使用'
+   }
+   return status
  }

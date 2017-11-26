@@ -84,3 +84,11 @@ export function idValidator(rule, value, callback) {
     callback()
   }
 }
+
+export function hostnameValidator(rule, value, callback) {
+  if (value.length > 0 && value.length < 60) {
+    callback()
+  } else {
+    callback(new Error('服务器地址为必填'))
+  }
+}
