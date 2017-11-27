@@ -62,7 +62,7 @@
 			<el-table-column label="操作" width="200">
 				<template scope="scope">
 					<el-button size="small" @click="edit(scope.$index, scope.row)">编辑</el-button>
-					<el-button size="small" @click="resetPassword(scope.$index, scope.row)">重置</el-button>
+					<el-button type="warning" size="small" @click="resetPassword(scope.$index, scope.row)">重置</el-button>
 					<el-button type="danger" size="small" @click="remove(scope.$index, scope.row)">删除</el-button>
 				</template>
 			</el-table-column>

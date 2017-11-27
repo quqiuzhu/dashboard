@@ -22,7 +22,24 @@
 		<el-table :data="items" highlight-current-row v-loading="loading" @selection-change="selectionChanged" style="width: 100%;">
 			<el-table-column type="selection" width="55">
 			</el-table-column>
-			<el-table-column prop="id" label="ID" width="60">
+			<el-table-column label="ID" width="60">
+				<template scope="scope">
+					<span></span>
+					<el-popover
+					  ref="popover"
+					  placement="top"
+					  width="184"
+						height="184"
+					  trigger="click">
+					  <qrcode-vue
+							:value="ss_uri(scope.row)"
+							size="160" level="H">
+						</qrcode-vue>
+					</el-popover>
+					<el-button type="text" v-popover:popover>
+						{{ scope.row.id }}
+					</el-button>
+				</template>
 			</el-table-column>
 			<el-table-column prop="hostname" label="服务器" width="140">
 			</el-table-column>
@@ -49,8 +66,7 @@
 			<el-table-column label="操作" width="200">
 				<template scope="scope">
 					<el-button size="small" @click="edit(scope.$index, scope.row)" :disabled="scope.row.status == 3">编辑</el-button>
-					<el-button type="primary" size="small"
-					@click="scope.row.status == 0 ? online(scope.$index, scope.row) : offline(scope.$index, scope.row)">
+					<el-button :type="scope.row.status == 0 ? 'primary':'warning'" size="small" @click="scope.row.status == 0 ? online(scope.$index, scope.row) : offline(scope.$index, scope.row)">
 						{{ scope.row.status == 0 ? '上线' : '下线' }}
 					</el-button>
 					<el-button type="danger" size="small" @click="remove(scope.$index, scope.row)" :disabled="scope.row.status != 0">删除</el-button>
@@ -60,7 +76,7 @@
 
 		<!--工具条-->
 		<el-col :span="24" class="toolbar">
-			<el-button type="primary" @click="isSelectionOnline ? batchOnline : batchOffline" :disabled="!(isSelectionOnline || isSelectionOffline)">{{isSelectionOnline ? '批量下线' : isSelectionOffline ? '批量上线' : '上线下线'}}</el-button>
+			<el-button :type="isSelectionOnline ? 'warning':'primary'" @click="isSelectionOnline ? batchOffline() : batchOnline()" :disabled="!(isSelectionOnline || isSelectionOffline)">{{isSelectionOnline ? '批量下线' : isSelectionOffline ? '批量上线' : '上线下线'}}</el-button>
 			<el-button type="danger" @click="batchRemove" :disabled="!isSelectionOffline">批量删除</el-button>
 			<el-pagination layout="prev, pager, next" @current-change="pageChanged" :page-size="params.count" :total="total" :current-page="page" style="float:right;">
 			</el-pagination>
@@ -79,13 +95,15 @@
 
 <script>
 import ServerEditor from './editor'
+import QrcodeVue from 'qrcode.vue'
+
 import { servers, addServer, removeServer,
 	batchRemoveServers, onlineServer, batchOnlineServers,
 	offlineServer, batchOfflineServers } from '@/api/server'
 import { server_status } from '@/utils/index'
 
 export default {
-	components: { ServerEditor },
+	components: { ServerEditor, QrcodeVue },
   data() {
     return {
       params: {
@@ -261,7 +279,7 @@ export default {
 
 		//删除
     remove: function (index, row) {
-			let message = '确认要删除「' + row.name + '」吗?'
+			let message = '确认要删除「' + row.hostname + ':' + row.port +  '」吗?'
       this.$confirm(message, '提示', {
         type: 'warning'
       }).then(() => {
@@ -296,7 +314,11 @@ export default {
     },
 
 		//工具类
-		status: server_status
+		status: server_status,
+		ss_uri: function (server) {
+			var uri = server.method + ":" + server.passwd + "@" + server.hostname + ":" + server.port
+			return "ss://" + btoa(uri) + "#buniao.ren"
+		}
   }
 }
 </script>
