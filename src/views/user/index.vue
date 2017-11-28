@@ -22,7 +22,7 @@
 		<el-table :data="items" highlight-current-row v-loading="loading" @selection-change="selectionChanged" style="width: 100%;">
 			<el-table-column type="selection" width="55">
 			</el-table-column>
-			<el-table-column prop="id" label="ID" width="80" sortable>
+			<el-table-column prop="id" label="ID" width="80">
 			</el-table-column>
 			<el-table-column prop="name" label="名字" width="120">
 			</el-table-column>

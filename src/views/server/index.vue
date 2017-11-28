@@ -47,7 +47,7 @@
 			</el-table-column>
 			<el-table-column prop="method" label="加密方式" width="120">
 			</el-table-column>
-			<el-table-column prop="passwd" label="密码" width="120">
+			<el-table-column prop="passwd" label="密码" width="160">
 			</el-table-column>
 			<el-table-column label="状态" min-width="80">
 				<template scope="scope">

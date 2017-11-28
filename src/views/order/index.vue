@@ -23,7 +23,7 @@
 
 		<!--列表-->
 		<el-table :data="items" highlight-current-row v-loading="loading"  style="width: 100%;">
-			<el-table-column prop="id" label="ID" width="80" sortable>
+			<el-table-column prop="id" label="ID" width="80">
 			</el-table-column>
 			<el-table-column label="用户" width="120">
 				<template scope="scope">
