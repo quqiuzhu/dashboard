@@ -317,7 +317,7 @@ export default {
 		status: server_status,
 		ss_uri: function (server) {
 			var uri = server.method + ":" + server.passwd + "@" + server.hostname + ":" + server.port
-			return "ss://" + btoa(uri) + "#buniao.ren"
+			return "ss://" + btoa(uri)
 		}
   }
 }
