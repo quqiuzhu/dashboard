@@ -24,21 +24,9 @@
 			</el-table-column>
 			<el-table-column label="ID" width="100">
 				<template scope="scope">
-					<span></span>
-					<el-popover
-					  ref="popover"
-					  placement="top"
-					  width="184"
-						height="184"
-					  trigger="click">
-					  <qrcode-vue
-							:value="ss_uri(scope.row)"
-							size="160" level="H">
-						</qrcode-vue>
-					</el-popover>
-					<el-button type="text" v-popover:popover>
-						{{ scope.row.id }}
-					</el-button>
+					<router-link :to="'/servers/item/' + scope.row.id">
+						<el-button type="text">{{ scope.row.id }}</el-button>
+					</router-link>
 					<span v-if="scope.row.owner">
 						/ {{scope.row.owner? scope.row.owner.name : '' }}
 					</span>
@@ -320,11 +308,7 @@ export default {
     },
 
 		//工具类
-		status: server_status,
-		ss_uri: function (server) {
-			var uri = server.method + ":" + server.passwd + "@" + server.hostname + ":" + server.port
-			return "ss://" + btoa(uri)
-		}
+		status: server_status
   }
 }
 </script>

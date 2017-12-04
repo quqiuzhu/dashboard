@@ -6,7 +6,6 @@
     <div class="app-content" :class="{hideSidebar:!sidebar.opened}">
       <sidebar class="app-sidebar"></sidebar>
       <div class="main-container">
-        <navbar></navbar>
         <app-main></app-main>
       </div>
     </div>

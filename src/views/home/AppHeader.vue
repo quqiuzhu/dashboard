@@ -8,6 +8,8 @@
     <el-col :span="10">
       <div class="tools" @click.prevent="toggleSideBar">
         <i class="fa fa-align-justify"></i>
+        &ensp;
+        {{$route.name}}
       </div>
     </el-col>
     <el-col :span="4" class="userinfo">
@@ -94,8 +96,8 @@ export default {
     }
     .tools{
         padding: 0px 23px;
-        width:14px;
         height: 60px;
+        width: 200px;
         line-height: 60px;
         cursor: pointer;
     }

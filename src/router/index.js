@@ -70,6 +70,11 @@ export const constantRouterMap = [
       name: '服务管理',
       component: _import('server/index'),
       meta: { role: ['admin'] }
+    },{
+      path: 'item/:id',
+      name: '服务账号',
+      component: _import('server/item'),
+      meta: { role: ['admin'] }
     }]
   },
 
