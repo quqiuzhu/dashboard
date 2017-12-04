@@ -1,7 +1,7 @@
 <template>
   <el-form :model="member" label-width="80px" ref="form">
     <el-form-item label="天数" prop="days">
-      <el-input-number v-model="member.days" type="" auto-complete="off" :min="30" :step="15" :max="1000"></el-input-number>
+      <el-input-number v-model="member.days" type="" auto-complete="off" :min="15" :step="15" :max="1000"></el-input-number>
     </el-form-item>
     <el-form-item>
       <el-button @click.native="cancel">取消</el-button>

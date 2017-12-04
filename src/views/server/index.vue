@@ -22,7 +22,7 @@
 		<el-table :data="items" highlight-current-row v-loading="loading" @selection-change="selectionChanged" style="width: 100%;">
 			<el-table-column type="selection" width="55">
 			</el-table-column>
-			<el-table-column label="ID" width="60">
+			<el-table-column label="ID" width="100">
 				<template scope="scope">
 					<span></span>
 					<el-popover
@@ -39,6 +39,9 @@
 					<el-button type="text" v-popover:popover>
 						{{ scope.row.id }}
 					</el-button>
+					<span v-if="scope.row.owner">
+						/ {{scope.row.owner? scope.row.owner.name : '' }}
+					</span>
 				</template>
 			</el-table-column>
 			<el-table-column prop="hostname" label="服务器" width="140">
@@ -47,7 +50,7 @@
 			</el-table-column>
 			<el-table-column prop="method" label="加密方式" width="120">
 			</el-table-column>
-			<el-table-column prop="passwd" label="密码" width="160">
+			<el-table-column prop="passwd" label="密码" width="140">
 			</el-table-column>
 			<el-table-column label="状态" min-width="80">
 				<template scope="scope">
@@ -57,6 +60,9 @@
 			<el-table-column type="expand">
 			 <template scope="props">
 				 <el-form label-position="left" inline class="server-expand">
+					 <el-form-item label="用户ID" v-if="props.row.owner">
+						 <span>{{ props.row.owner.id }}</span>
+					 </el-form-item>
 					 <el-form-item label="创建时间">
 						 <span>{{ props.row.create_time }}</span>
 					 </el-form-item>

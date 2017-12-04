@@ -56,6 +56,15 @@
 					 <el-form-item label="登录时间">
 						 <span>{{ props.row.logTime }}</span>
 					 </el-form-item>
+					 <el-form-item label="服务ID" v-if="props.row.server">
+						 <span>{{ props.row.server.id }}</span>
+					 </el-form-item>
+					 <el-form-item label="服务器" v-if="props.row.server">
+						 <span>{{ props.row.server.hostname }}</span>
+					 </el-form-item>
+					 <el-form-item label="服务端口" v-if="props.row.server">
+						 <span>{{ props.row.server.port }}</span>
+					 </el-form-item>
 				 </el-form>
 			 </template>
 			</el-table-column>
@@ -252,13 +261,13 @@ export default {
 .user-expand {
 	font-size: 0;
 	label {
-    width: 90px;
+    width: 70px;
     color: #99a9bf;
   }
 	.el-form-item {
     margin-right: 0;
     margin-bottom: 0;
-    width: 50%;
+    width: 33%;
   }
 }
 </style>

@@ -1,5 +1,12 @@
 import fetch from '@/utils/fetch'
 
+export function server(id) {
+  return fetch({
+    url: '/server/' + id,
+    method: 'get'
+  })
+}
+
 export function servers(params) {
   return fetch({
     url: '/servers',
@@ -86,10 +93,17 @@ export function batchRemoveServers(ids) {
 
 export function assginServer(id, uid) {
   return fetch({
-    url: '/server/' + id + '/assgin',
+    url: '/server/' + id + '/assign',
     method: 'post',
     data: {
       'uid': uid
     }
+  })
+}
+
+export function unassginServer(id) {
+  return fetch({
+    url: '/server/' + id + '/unassign',
+    method: 'post'
   })
 }

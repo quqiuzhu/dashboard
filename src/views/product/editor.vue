@@ -11,15 +11,17 @@
       <el-option label="一年" value="365"></el-option>
       <el-option label="半年" value="180"></el-option>
       <el-option label="三个月" value="90"></el-option>
+      <el-option label="一个月" value="31"></el-option>
+      <el-option label="体验周" value="5"></el-option>
     </el-select>
   </el-form-item>
     <el-form-item label="价格">
       <el-col :span="10">
-      <el-input-number v-model="product.price" auto-complete="off" :min="0" :step="10" :max="1000"></el-input-number>
+      <el-input-number v-model="product.price" auto-complete="off" :min="1" :step="1" :max="1000"></el-input-number>
       </el-col>
       <el-col :span="11">
         <span>原价&nbsp;</span>
-        <el-input-number v-model="product.orig_price" auto-complete="off" :min="30" :step="10" :max="1000"></el-input-number>
+        <el-input-number v-model="product.orig_price" auto-complete="off" :min="1" :step="10" :max="1000"></el-input-number>
       </el-col>
     </el-form-item>
     <el-form-item>
