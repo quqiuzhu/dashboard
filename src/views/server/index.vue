@@ -24,7 +24,7 @@
 			</el-table-column>
 			<el-table-column label="ID" width="100">
 				<template scope="scope">
-					<router-link :to="'/servers/item/' + scope.row.id">
+					<router-link :to="'/servers/' + scope.row.id">
 						<el-button type="text">{{ scope.row.id }}</el-button>
 					</router-link>
 					<span v-if="scope.row.owner">

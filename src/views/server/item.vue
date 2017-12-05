@@ -8,8 +8,10 @@
           </el-button>
 				</el-form-item>
         <el-form-item>
-					<el-button type="primary" @click="assign" :disable="!assignAble">
-						 分配
+					<el-button
+					:type="server.owner? 'danger' : 'primary'"
+					@click="server.owner ? unassign() : assign()">
+						 {{server.owner ? "解除分配": "分配"}}
 					</el-button>
 				</el-form-item>
 				<el-form-item style="float:right;">
@@ -102,16 +104,6 @@ export default {
 			assignVisible: false
     }
   },
-	computed: {
-		assignAble: function () {
-			if (this.server.owner) {
-				console.log("false");
-				return false
-			}
-			console.log("true");
-			return true
-		}
-	},
   created() {
     this.fetchServer()
   },
@@ -123,6 +115,7 @@ export default {
 
 			})
     },
+		//分配
 		assign: function () {
 			this.assignSid = this.server.id
 			this.assignVisible = true
@@ -133,10 +126,28 @@ export default {
 				this.fetchServer()
 			}
 		},
+
+		//解除分配
+		unassign: function () {
+			let message = '确认要解除分配「' + server.hostname + ':' + server.port + '」吗?'
+      this.$confirm(message, '提示', {
+        type: 'warning'
+      }).then(() => {
+        this.loading = true;
+        onlineServer(row.id).then((res) => {
+          this.loading = false;
+          this.$message({message: '解除分配成功', type: 'success'})
+					this.fetchServer()
+        }).catch(() => {
+					this.loading = false;
+	      })
+      })
+		},
+
 		//工具类
 		status: server_status,
 		ss_uri: function (server) {
-      if (!server) return ;
+      if (!server.hostname) return ;
 			var uri = server.method + ":" + server.passwd + "@" + server.hostname + ":" + server.port
 			return "ss://" + btoa(uri)
 		}

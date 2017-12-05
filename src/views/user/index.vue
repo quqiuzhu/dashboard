@@ -57,7 +57,9 @@
 						 <span>{{ props.row.logTime }}</span>
 					 </el-form-item>
 					 <el-form-item label="服务ID" v-if="props.row.server">
-						 <span>{{ props.row.server.id }}</span>
+						 <router-link :to="'/servers/item/' + props.row.server.id">
+	 						<el-button type="text">{{ props.row.server.id }}</el-button>
+	 					</router-link>
 					 </el-form-item>
 					 <el-form-item label="服务器" v-if="props.row.server">
 						 <span>{{ props.row.server.hostname }}</span>

@@ -142,7 +142,7 @@ export default {
 		},
 
 		buyPackage: function () {
-			buy(3).then((data) => {
+			buy('month').then((data) => {
 				this.loading = false;
 				WP.click(data)
 				WP.err = function(err) {

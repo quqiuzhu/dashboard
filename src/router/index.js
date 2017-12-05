@@ -16,16 +16,17 @@ Vue.use(Router)
 * meta : `{ role: ['admin'] }`  will control the page role
 **/
 export const constantRouterMap = [
-  { path: '/login', component: _import('login/index'), hidden: true },
-  { path: '/404', component: _import('404'), hidden: true },
+  { path: '/login', component: _import('common/login'), hidden: true },
+  { path: '/404', component: _import('common/404'), hidden: true },
+  { path: '/buy/:type', component: _import('common/buy'), hidden: true },
   {
     path: '/dashboard',
     component: Structure,
-    redirect: 'dashboard/index',
+    redirect: 'dashboard/',
     icon: 'fa fa-bar-chart icon',
     noDropdown: true,
     children: [{
-      path: 'index',
+      path: '',
       name: '数据统计',
       component: _import('dashboard/index')
     }]
@@ -34,11 +35,11 @@ export const constantRouterMap = [
   {
     path: '/users',
     component: Structure,
-    redirect: '/users/index',
+    redirect: '/users/',
     icon: 'fa fa-users icon',
     noDropdown: true,
     children: [{
-      path: 'index',
+      path: '',
       name: '用户管理',
       component: _import('user/index'),
       meta: { role: ['admin'] }
@@ -48,11 +49,11 @@ export const constantRouterMap = [
   {
     path: '/orders',
     component: Structure,
-    redirect: '/orders/index',
+    redirect: '/orders/',
     icon: 'fa fa-list-alt icon',
     noDropdown: true,
     children: [{
-      path: 'index',
+      path: '',
       name: '订单管理',
       component: _import('order/index'),
       meta: { role: ['admin'] }
@@ -62,16 +63,16 @@ export const constantRouterMap = [
   {
     path: '/servers',
     component: Structure,
-    redirect: '/servers/index',
+    redirect: '/servers/',
     icon: 'fa fa-heart icon',
     noDropdown: true,
     children: [{
-      path: 'index',
+      path: '',
       name: '服务管理',
       component: _import('server/index'),
       meta: { role: ['admin'] }
     },{
-      path: 'item/:id',
+      path: ':id',
       name: '服务账号',
       component: _import('server/item'),
       meta: { role: ['admin'] }
@@ -81,11 +82,11 @@ export const constantRouterMap = [
   {
     path: '/products',
     component: Structure,
-    redirect: '/products/index',
+    redirect: '/products/',
     icon: 'fa fa-shopping-bag icon',
     noDropdown: true,
     children: [{
-      path: 'index',
+      path: '',
       name: '套餐管理',
       component: _import('product/index'),
       meta: { role: ['admin'] }
