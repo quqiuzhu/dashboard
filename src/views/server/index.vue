@@ -22,7 +22,7 @@
 		<el-table :data="items" highlight-current-row v-loading="loading" @selection-change="selectionChanged" style="width: 100%;">
 			<el-table-column type="selection" width="55">
 			</el-table-column>
-			<el-table-column label="ID" width="100">
+			<el-table-column label="ID" width="120">
 				<template scope="scope">
 					<router-link :to="'/servers/' + scope.row.id">
 						<el-button type="text">{{ scope.row.id }}</el-button>

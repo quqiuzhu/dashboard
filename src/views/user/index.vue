@@ -199,9 +199,7 @@ export default {
 		},
 		onMemberUpdate: function (valueChanged) {
 			this.memberVisible = false;
-			if (valueChanged) {
-				this.fetchUsers()
-			}
+			this.fetchUsers()
 		},
 
 		//重置密码
