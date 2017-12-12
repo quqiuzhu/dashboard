@@ -61,7 +61,7 @@
 		<el-col :span="24" class="toolbar" v-if="server.owner">
 			<div >
 		    <span style="line-height: 36px;">会员「{{server.owner.name}}」正在使用</span>
-		    <el-button style="float: right;" type="warning" :disable="assignAble">取消分配</el-button>
+		    <el-button style="float: right;" type="warning">取消分配</el-button>
 		  </div>
 		</el-col>
 

@@ -36,10 +36,7 @@ export default {
         'sidebar',
         'name',
         'avatar'
-      ]),
-      sidebar() {
-        return this.$store.state.app.sidebar
-      }
+      ])
     },
     methods: {
       toggleSideBar() {
