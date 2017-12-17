@@ -10,13 +10,14 @@ export function captcha(phone) {
   })
 }
 
-export function login(phone, password) {
+export function login(phone, password, code) {
   return fetch({
     url: '/user/login',
     method: 'post',
     data: {
       phone,
-      password
+      password,
+      code
     }
   })
 }

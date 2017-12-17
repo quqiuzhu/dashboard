@@ -142,7 +142,7 @@ export default {
 		},
 
 		buyPackage: function () {
-			buy('month').then((data) => {
+			buy('month', 'ali').then((data) => {
 				this.loading = false;
 				WP.click(data)
 				WP.err = function(err) {
