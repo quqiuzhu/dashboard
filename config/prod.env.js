@@ -1,4 +1,4 @@
 module.exports = {
   NODE_ENV: '"production"',
-  BASE_API: '"https://ticks.quqiuzhu.com/api"',
+  BASE_API: '"https://jjfz.co/api"',
 }
