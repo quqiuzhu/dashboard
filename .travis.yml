@@ -23,7 +23,7 @@ deploy:
   github-token: $GITHUB_TOKEN
   verbose: true
   keep-history: false
-  local-dir: public
+  local-dir: dist
   repo: quqiuzhu/admin.quqiuzhu.com
   target_branch: master
   on:
