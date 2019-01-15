@@ -20,11 +20,11 @@ script:
 deploy:
   provider: pages
   skip-cleanup: true
-  github-token: $GITHUB_TOKEN  
+  github-token: $GITHUB_TOKEN
   verbose: true
   keep-history: false
   local-dir: public
-  repo: https://github.com/quqiuzhu/admin.quqiuzhu.com.git
+  repo: quqiuzhu/admin.quqiuzhu.com
   target_branch: master
   on:
     branch: master
