@@ -1,0 +1,30 @@
+language: node_js
+# nodejs版本
+node_js:
+    - '8'
+
+# Travis-CI Caching
+cache:
+  directories:
+    - node_modules
+
+
+# Build Lifecycle
+install:
+  - npm install
+
+# script - run the build script
+script:
+  - npm run build
+
+deploy:
+  provider: pages
+  skip-cleanup: true
+  github-token: $GITHUB_TOKEN  
+  verbose: true
+  keep-history: false
+  local-dir: public
+  repo: https://github.com/quqiuzhu/admin.quqiuzhu.com.git
+  target_branch: master
+  on:
+    branch: master

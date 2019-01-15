@@ -1,6 +1,6 @@
 <template>
   <el-form :model="loginForm" :rules="loginRules" ref="loginForm" label-position="left" label-width="0px" class="login-container">
-    <h3 class="title">不鸟科技·管理系统</h3>
+    <h3 class="title">后台管理系统</h3>
     <el-form-item prop="phone">
       <el-input type="text" v-model="loginForm.phone" auto-complete="off" placeholder="手机号"></el-input>
     </el-form-item>
