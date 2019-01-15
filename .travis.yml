@@ -24,7 +24,7 @@ deploy:
   verbose: true
   keep-history: false
   local-dir: dist
-  repo: quqiuzhu/admin.quqiuzhu.com
+  repo: quqiuzhu/admin
   target_branch: master
   on:
     branch: master
