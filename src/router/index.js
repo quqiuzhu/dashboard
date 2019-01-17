@@ -19,18 +19,18 @@ export const constantRouterMap = [
   { path: '/login', component: _import('common/login'), hidden: true },
   { path: '/404', component: _import('common/404'), hidden: true },
   { path: '/buy/:type', component: _import('common/buy'), hidden: true },
-  {
-    path: '/dashboard',
-    component: Structure,
-    redirect: 'dashboard/',
-    icon: 'fa fa-bar-chart icon',
-    noDropdown: true,
-    children: [{
-      path: '',
-      name: '数据统计',
-      component: _import('dashboard/index')
-    }]
-  },
+  // {
+  //   path: '/dashboard',
+  //   component: Structure,
+  //   redirect: 'dashboard/',
+  //   icon: 'fa fa-bar-chart icon',
+  //   noDropdown: true,
+  //   children: [{
+  //     path: '',
+  //     name: '数据统计',
+  //     component: _import('dashboard/index')
+  //   }]
+  // },
 
   {
     path: '/users',
@@ -42,20 +42,6 @@ export const constantRouterMap = [
       path: '',
       name: '用户管理',
       component: _import('user/index'),
-      meta: { role: ['admin'] }
-    }]
-  },
-
-  {
-    path: '/orders',
-    component: Structure,
-    redirect: '/orders/',
-    icon: 'fa fa-list-alt icon',
-    noDropdown: true,
-    children: [{
-      path: '',
-      name: '订单管理',
-      component: _import('order/index'),
       meta: { role: ['admin'] }
     }]
   },
@@ -93,7 +79,21 @@ export const constantRouterMap = [
     }]
   },
 
-  { path: '/', redirect: '/dashboard', hidden: true },
+  {
+    path: '/orders',
+    component: Structure,
+    redirect: '/orders/',
+    icon: 'fa fa-list-alt icon',
+    noDropdown: true,
+    children: [{
+      path: '',
+      name: '订单管理',
+      component: _import('order/index'),
+      meta: { role: ['admin'] }
+    }]
+  },
+
+  { path: '/', redirect: '/users', hidden: true },
   { path: '*', redirect: '/404', hidden: true }
 ]
 

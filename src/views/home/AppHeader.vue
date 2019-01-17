@@ -2,7 +2,7 @@
   <el-col :span="24" class="header">
     <el-col :span="10" class="logo" :class="!sidebar.opened?'logo-collapse-width':'logo-width'">
       <span class="logo-img"><img src="static/logo.png" />
-        {{!sidebar.opened?'':'不鸟科技'}}
+        {{!sidebar.opened?'':'管理系统'}}
       </span>
     </el-col>
     <el-col :span="10">
