@@ -8,10 +8,12 @@ cache:
   directories:
     - node_modules
 
-
 # Build Lifecycle
 install:
   - npm install
+
+before_script:
+    - rm -rf dist 2> /dev/null
 
 # script - run the build script
 script:
@@ -24,7 +26,7 @@ deploy:
   verbose: true
   keep-history: false
   local-dir: dist
-  repo: quqiuzhu/admin
-  target_branch: master
+  repo: quqiuzhu/dashboard
+  target_branch: gh-pages
   on:
     branch: master
