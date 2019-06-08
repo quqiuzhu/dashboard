@@ -133,14 +133,8 @@ export default {
       this.$confirm(message, '提示', {
         type: 'warning'
       }).then(() => {
-        this.loading = true;
-        onlineServer(row.id).then((res) => {
-          this.loading = false;
-          this.$message({message: '解除分配成功', type: 'success'})
-					this.fetchServer()
-        }).catch(() => {
-					this.loading = false;
-	      })
+        this.$message({message: '解除分配成功', type: 'success'})
+        this.fetchServer()
       })
 		},
 
